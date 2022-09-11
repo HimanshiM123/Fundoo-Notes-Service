@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class NotesDTO {
-
     private String title;
     private String description;
     private long userId;
