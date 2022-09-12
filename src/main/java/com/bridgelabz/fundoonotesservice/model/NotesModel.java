@@ -33,9 +33,6 @@ public class NotesModel {
     public NotesModel(NotesDTO notesDTO) {
         this.title = notesDTO.getTitle();
         this.description = notesDTO.getDescription();
-        this.userId = notesDTO.getUserId();
-        this.registerDate = notesDTO.getRegisterDate();
-        this.updateDate = notesDTO.getUpdateDate();
         this.trash = notesDTO.isTrash();
         this.isArchive = notesDTO.isArchive();
         this.pin = notesDTO.isPin();

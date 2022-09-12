@@ -52,28 +52,29 @@ public class NotesController {
 
     @GetMapping("/getAllNotes")
     public List<NotesModel> getAllNotes(@RequestHeader String token){
+
         return notesService.getAllNotes(token);
     }
 
         /*
          @Purpose : Able to update Notes in the notes Repository
-         @Param :   NotesDTO, id and token
+         @Param :   NotesDTO,  noteId and token
          */
 
     @PutMapping("updateNotes/{id}")
-    ResponseEntity<Response> updateNotes(@Valid @RequestBody NotesDTO notesDTO, @PathVariable long id, @RequestHeader String token ){
-        Response response = notesService.updateNotes(id, notesDTO, token);
+    ResponseEntity<Response> updateNotes(@Valid @RequestBody NotesDTO notesDTO, @PathVariable long noteId, @RequestHeader String token ){
+        Response response = notesService.updateNotes(noteId, notesDTO, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
         /*
             @Purpose : Able to add deleted Notes in the trash in the notes Repository
-            @Param :   id and token
+            @Param :    noteId and token
             */
     @DeleteMapping("trashNotes/{id}")
-    ResponseEntity<Response> trash(@PathVariable Long id, @RequestHeader String token){
+    ResponseEntity<Response> trash(@PathVariable Long noteId, @RequestHeader String token){
 
-        Response response = notesService.trash(id, token);
+        Response response = notesService.trash(noteId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -89,28 +90,28 @@ public class NotesController {
 
             /*
                @Purpose : Able to  deleted Notes from the notes Repository
-               @Param :   id and token
+               @Param :    noteId and token
                */
     @DeleteMapping("deleteNotes/{id}")
-    ResponseEntity<Response> delete(@PathVariable Long id, @RequestHeader String token){
+    ResponseEntity<Response> delete(@PathVariable Long noteId, @RequestHeader String token){
 
-        Response response = notesService.delete(id, token);
+        Response response = notesService.delete(noteId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
           /*
            @Purpose : Able to  Archive Notes in the notes Repository
-           @Param :   id and token
+           @Param :    noteId and token
             */
     @PutMapping("/archive")
-    public ResponseEntity<Response> moveToArchive(@PathVariable Long id, @RequestHeader String token) {
-        Response response = notesService.archiveNote(id, token);
+    public ResponseEntity<Response> moveToArchive(@PathVariable Long noteId, @RequestHeader String token) {
+        Response response = notesService.archiveNote(noteId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
             /*
               @Purpose : Able to get Archive Notes in the notes Repository
-              @Param :   id and token
+              @Param :    noteId and token
                */
     @GetMapping("/getArchive")
     public List<NotesModel> getArchive(@RequestHeader String token){
@@ -118,43 +119,64 @@ public class NotesController {
         return notesService.getArchiveNotes(token);
     }
 
+          /*
+             @Purpose : Able to  pin Notes in the notes Repository
+             @Param :   noteId and token
+             */
+    @PutMapping("/pinNotes")
+    public ResponseEntity<Response> pinNotes(@PathVariable Long noteId, @RequestHeader String token){
+        Response response = notesService.pinNotes(noteId, token);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+                /*
+                 @Purpose : Able to  unpin Notes in the notes Repository
+                 @Param :   noteId and token
+                  */
+        @PutMapping("/unPinNotes")
+        public ResponseEntity<Response> unPinNotes(@PathVariable Long noteId, @RequestHeader String token){
+            Response response = notesService.unPinNotes(noteId, token);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
         /*
          @Purpose : Able to get pin Notes in the notes Repository
-         @Param :   id and token
+         @Param :    noteId and token
           */
     @GetMapping("/getPin")
-    public List<NotesModel> pin(@RequestHeader String token){
-        return notesService.pinned(token);
+    public List<NotesModel> getPin(@RequestHeader String token){
+
+        return notesService.getPinnedNotes(token);
     }
 
         /*
              @Purpose : Able to remove Trashed Notes in the notes Repository
-             @Param :   id and token
+             @Param :    noteId and token
              */
     @DeleteMapping("/removeTrash/{id}")
-    ResponseEntity<Response> removeTrash(@PathVariable Long id, @RequestHeader String token){
+    ResponseEntity<Response> removeTrash(@PathVariable Long noteId, @RequestHeader String token){
 
-        Response response = notesService.removeTrash(id, token);
+        Response response = notesService.removeTrash(noteId, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
         /*
           @Purpose : Able to add colour to the Notes in the notes Repository
-          @Param :   id, token and colour
+          @Param :    noteId, token and colour
           */
+
     @PutMapping("/addColour")
-    public ResponseEntity<Response> addColour(@RequestHeader String token, @PathVariable Long id, @RequestHeader String colour) {
-        Response response = notesService.addColour(token, id, colour);
+    public ResponseEntity<Response> addColour(@RequestHeader String token, @PathVariable Long noteId, @RequestHeader String colour) {
+        Response response = notesService.addColour(token, noteId, colour);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
         /*
              @Purpose : Able to get colour  Notes from the notes Repository by id
-             @Param :   id
+             @Param :    noteId
              */
     @GetMapping("/getColour")
-    ResponseEntity<Response> getColour(@PathVariable Long id) {
-        Response response = notesService.getColour(id);
+    ResponseEntity<Response> getColour(@PathVariable Long noteId) {
+        Response response = notesService.getColour(noteId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,9 +13,6 @@ import java.util.List;
 public class NotesDTO {
     private String title;
     private String description;
-    private long userId;
-    private LocalDateTime registerDate;
-    private LocalDateTime updateDate;
     private boolean trash;
     private boolean isArchive;
     private boolean pin;

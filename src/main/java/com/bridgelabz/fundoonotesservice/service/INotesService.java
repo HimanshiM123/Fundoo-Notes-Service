@@ -12,16 +12,16 @@ import java.util.List;
 public interface INotesService {
     Response addNotes(NotesDTO notesDTO, String token);
 
-    Response getNotesById(long id);
+    Response getNotesById(long noteId);
     List<NotesModel> getAllNotes(String token);
 
-    Response updateNotes(long id, NotesDTO notesDTO, String token);
+    Response updateNotes(long noteId, NotesDTO notesDTO, String token);
 
-    Response trash(Long id, String token);
+    Response trash(Long noteId, String token);
 
-    Response delete(Long id, String token);
+    Response delete(Long noteId, String token);
 
-    Response archiveNote(Long id, String token);
+    Response archiveNote(Long noteId, String token);
 
 
     List<NotesModel> getTrashNotes(String token);
@@ -29,11 +29,15 @@ public interface INotesService {
 
     List<NotesModel> getArchiveNotes(String token);
 
-    List<NotesModel> pinned(String token);
+    List<NotesModel> getPinnedNotes(String token);
 
-    Response removeTrash(Long id, String token);
+    Response removeTrash(Long noteId, String token);
 
-    Response addColour(String token, Long id, String colour);
+    Response addColour(String token, Long noteId, String colour);
 
-    Response getColour(Long id);
+    Response getColour(Long noteId);
+
+    Response pinNotes(Long noteId, String token);
+
+    Response unPinNotes(Long noteId, String token);
 }
