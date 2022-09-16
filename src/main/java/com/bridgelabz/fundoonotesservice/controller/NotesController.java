@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
     /*
@@ -62,8 +63,8 @@ public class NotesController {
          */
 
     @PutMapping("updateNotes/{id}")
-    ResponseEntity<Response> updateNotes(@Valid @RequestBody NotesDTO notesDTO, @PathVariable long noteId, @RequestHeader String token ){
-        Response response = notesService.updateNotes(noteId, notesDTO, token);
+    ResponseEntity<Response> updateNotes(@Valid @RequestBody NotesDTO notesDTO, @PathVariable long id, @RequestHeader String token ){
+        Response response = notesService.updateNotes(id, notesDTO, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -72,9 +73,9 @@ public class NotesController {
             @Param :    noteId and token
             */
     @DeleteMapping("trashNotes/{id}")
-    ResponseEntity<Response> trash(@PathVariable Long noteId, @RequestHeader String token){
+    ResponseEntity<Response> trash(@PathVariable Long id, @RequestHeader String token){
 
-        Response response = notesService.trash(noteId, token);
+        Response response = notesService.trash(id, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -93,9 +94,9 @@ public class NotesController {
                @Param :    noteId and token
                */
     @DeleteMapping("deleteNotes/{id}")
-    ResponseEntity<Response> delete(@PathVariable Long noteId, @RequestHeader String token){
+    ResponseEntity<Response> delete(@PathVariable Long id, @RequestHeader String token){
 
-        Response response = notesService.delete(noteId, token);
+        Response response = notesService.delete(id, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -104,8 +105,8 @@ public class NotesController {
            @Param :    noteId and token
             */
     @PutMapping("/archive")
-    public ResponseEntity<Response> moveToArchive(@PathVariable Long noteId, @RequestHeader String token) {
-        Response response = notesService.archiveNote(noteId, token);
+    public ResponseEntity<Response> moveToArchive(@PathVariable Long id, @RequestHeader String token) {
+        Response response = notesService.archiveNote(id, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -124,8 +125,8 @@ public class NotesController {
              @Param :   noteId and token
              */
     @PutMapping("/pinNotes")
-    public ResponseEntity<Response> pinNotes(@PathVariable Long noteId, @RequestHeader String token){
-        Response response = notesService.pinNotes(noteId, token);
+    public ResponseEntity<Response> pinNotes(@PathVariable Long id, @RequestHeader String token){
+        Response response = notesService.pinNotes(id, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
                 /*
@@ -133,8 +134,8 @@ public class NotesController {
                  @Param :   noteId and token
                   */
         @PutMapping("/unPinNotes")
-        public ResponseEntity<Response> unPinNotes(@PathVariable Long noteId, @RequestHeader String token){
-            Response response = notesService.unPinNotes(noteId, token);
+        public ResponseEntity<Response> unPinNotes(@PathVariable Long id, @RequestHeader String token){
+            Response response = notesService.unPinNotes(id, token);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
@@ -153,9 +154,9 @@ public class NotesController {
              @Param :    noteId and token
              */
     @DeleteMapping("/removeTrash/{id}")
-    ResponseEntity<Response> removeTrash(@PathVariable Long noteId, @RequestHeader String token){
+    ResponseEntity<Response> removeTrash(@PathVariable Long id, @RequestHeader String token){
 
-        Response response = notesService.removeTrash(noteId, token);
+        Response response = notesService.removeTrash(id, token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -165,8 +166,8 @@ public class NotesController {
           */
 
     @PutMapping("/addColour")
-    public ResponseEntity<Response> addColour(@RequestHeader String token, @PathVariable Long noteId, @RequestHeader String colour) {
-        Response response = notesService.addColour(token, noteId, colour);
+    public ResponseEntity<Response> addColour(@RequestHeader String token, @PathVariable Long id, @RequestHeader String colour) {
+        Response response = notesService.addColour(token, id, colour);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -175,8 +176,24 @@ public class NotesController {
              @Param :    noteId
              */
     @GetMapping("/getColour")
-    ResponseEntity<Response> getColour(@PathVariable Long noteId) {
-        Response response = notesService.getColour(noteId);
+    ResponseEntity<Response> getColour(@PathVariable Long id) {
+        Response response = notesService.getColour(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+        @PostMapping(value = "/addCollaborator")
+        ResponseEntity<Response> addCollaborator(@RequestParam String email, @PathVariable Long id, @RequestParam List<String> collaborator ) {
+            Response response = notesService.addCollaborator(email, id, collaborator);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        @PostMapping(value = "/addLabel")
+        ResponseEntity<Response> addLabel(@RequestHeader String token, @PathVariable Long id, @RequestParam List<Long> labelId ) {
+            Response response = notesService.addLabel(token, id, labelId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        
+        @PostMapping(value = "/setRemainder/{id}")
+        ResponseEntity<Response> setRemainder(@RequestHeader String token, @PathVariable Long id, @RequestParam String remainderTime) {
+            Response response = notesService.setRemainder(token, id, remainderTime);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
 }

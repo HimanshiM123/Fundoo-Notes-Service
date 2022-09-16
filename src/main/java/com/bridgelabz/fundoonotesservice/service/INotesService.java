@@ -3,7 +3,6 @@ package com.bridgelabz.fundoonotesservice.service;
 import com.bridgelabz.fundoonotesservice.DTO.NotesDTO;
 import com.bridgelabz.fundoonotesservice.model.NotesModel;
 import com.bridgelabz.fundoonotesservice.util.Response;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,16 +11,16 @@ import java.util.List;
 public interface INotesService {
     Response addNotes(NotesDTO notesDTO, String token);
 
-    Response getNotesById(long noteId);
+    Response getNotesById(long id);
     List<NotesModel> getAllNotes(String token);
 
-    Response updateNotes(long noteId, NotesDTO notesDTO, String token);
+    Response updateNotes(long id, NotesDTO notesDTO, String token);
 
-    Response trash(Long noteId, String token);
+    Response trash(Long id, String token);
 
-    Response delete(Long noteId, String token);
+    Response delete(Long id, String token);
 
-    Response archiveNote(Long noteId, String token);
+    Response archiveNote(Long id, String token);
 
 
     List<NotesModel> getTrashNotes(String token);
@@ -31,13 +30,19 @@ public interface INotesService {
 
     List<NotesModel> getPinnedNotes(String token);
 
-    Response removeTrash(Long noteId, String token);
+    Response removeTrash(Long id, String token);
 
-    Response addColour(String token, Long noteId, String colour);
+    Response addColour(String token, Long id, String colour);
 
-    Response getColour(Long noteId);
+    Response getColour(Long id);
 
-    Response pinNotes(Long noteId, String token);
+    Response pinNotes(Long id, String token);
 
-    Response unPinNotes(Long noteId, String token);
+    Response unPinNotes(Long id, String token);
+
+    Response addCollaborator(String email, Long id, List<String> collaborator);
+
+    Response addLabel(String token, Long id, List<Long> labelId);
+
+    Response setRemainder(String token, Long id, String remainderTime);
 }

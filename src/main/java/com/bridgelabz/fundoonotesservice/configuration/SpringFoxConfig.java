@@ -67,7 +67,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
                 .select()
 
-                .apis(RequestHandlerSelectors.basePackage("com.bridgelabz.fundoouserservice.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.bridgelabz.fundoonotesservice.controller"))
 
                 .paths(PathSelectors.any())
 
@@ -126,7 +126,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
     private ApiInfo apiInfo() {
 
-        return new ApiInfo("FundooUserService",
+        return new ApiInfo("FundooNotesService",
 
                 "APIs for E.",
 
@@ -134,7 +134,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
                 "Terms of service",
 
-                new Contact("FundooUserService", "http://bridgelabz.fundoouserservice", "himanshi1252@gmail.com"),
+                new Contact("FundooNotesService", "http://bridgelabz.fundoonotesservice", "himanshi1252@gmail.com"),
 
                 "Apache 2.0",
 

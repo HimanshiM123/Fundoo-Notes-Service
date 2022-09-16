@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotesservice.model;
 
 import com.bridgelabz.fundoonotesservice.DTO.NotesDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,6 +30,9 @@ public class NotesModel {
     @Column
     @ElementCollection(targetClass = String.class)
     List<String> collaborator;
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<LabelModel> labelList;
 
     public NotesModel(NotesDTO notesDTO) {
         this.title = notesDTO.getTitle();
