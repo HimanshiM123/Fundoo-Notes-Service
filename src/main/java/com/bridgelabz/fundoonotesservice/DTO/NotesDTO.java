@@ -13,9 +13,6 @@ import java.util.List;
 public class NotesDTO {
     private String title;
     private String description;
-    private boolean trash;
-    private boolean isArchive;
-    private boolean pin;
     private Long labelId;
     private String emailId;
     private String color;

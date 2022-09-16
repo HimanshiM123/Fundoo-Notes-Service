@@ -38,8 +38,8 @@ public class NotesService implements INotesService{
      */
     @Override
     public Response addNotes(NotesDTO notesDTO, String token) {
-//        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
-//        if (isUserPresent) {
+        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        if (isUserPresent) {
             Long userId = tokenUtil.decodeToken(token);
                 NotesModel notesModel = new NotesModel(notesDTO);
                 notesModel.setUserId(userId);
@@ -49,8 +49,8 @@ public class NotesService implements INotesService{
                 String subject = "Mentor added Successfully....";
                 mailService.send(notesModel.getEmailId(), body, subject);
                 return new Response("Mentor Added Successfully", 200, notesModel);
-//        }
-//        throw new NotesException(400, "Token is Wrong");
+        }
+        throw new NotesException(400, "Token is Wrong");
     }
 
     /*
