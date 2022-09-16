@@ -3,7 +3,9 @@ package com.bridgelabz.fundoonotesservice.service;
 import com.bridgelabz.fundoonotesservice.DTO.LabelDTO;
 import com.bridgelabz.fundoonotesservice.exception.NotesException;
 import com.bridgelabz.fundoonotesservice.model.LabelModel;
+import com.bridgelabz.fundoonotesservice.model.NotesModel;
 import com.bridgelabz.fundoonotesservice.repository.ILabelRepository;
+import com.bridgelabz.fundoonotesservice.repository.INotesRepository;
 import com.bridgelabz.fundoonotesservice.util.Response;
 import com.bridgelabz.fundoonotesservice.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,8 @@ public class LabelService implements ILabelService{
     @Autowired
     ILabelRepository labelRepository;
     @Autowired
+    INotesRepository notesRepository;
+    @Autowired
     TokenUtil tokenUtil;
     @Autowired
     MailService mailService;
@@ -26,16 +31,25 @@ public class LabelService implements ILabelService{
     @Autowired
     RestTemplate restTemplate;
     @Override
-    public Response addLabel(LabelDTO labelDTO, String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
-        if (isUserPresent) {
-            LabelModel labelModel = new LabelModel(labelDTO);
-            labelModel.setRegisterDate(LocalDateTime.now());
-            labelRepository.save(labelModel);
-            return new Response("Label Added Successfully", 200, labelModel);
+    public Response addLabel(LabelDTO labelDTO, String token, List<Long> labelId, Long noteId) {
+            boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+            if (isUserPresent) {
+                List<LabelModel> isLabelListPresent = new ArrayList<>();
+                labelId.stream().forEach(label -> {
+                    Optional<LabelModel> isLabelPresent = labelRepository.findById(label);
+                    if (isLabelPresent.isPresent()){
+                        isLabelListPresent.add(isLabelPresent.get());
+                    }
+                });
+                Optional<NotesModel> notes = notesRepository.findById(noteId);
+                if (notes.isPresent()){
+                    notes.get().setLabelList(isLabelListPresent);
+                    notesRepository.save(notes.get());
+                    return new Response("Label Added", 200, notes.get());
+                }
+            }
+            throw new NotesException(400, "Notes Not Found");
         }
-        throw new NotesException(400, "Token is Wrong");
-    }
 
     @Override
     public Response getAllLabel(String token) {

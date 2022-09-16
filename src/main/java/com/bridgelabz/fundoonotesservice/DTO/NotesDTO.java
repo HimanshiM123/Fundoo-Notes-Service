@@ -19,7 +19,7 @@ public class NotesDTO {
     private Long labelId;
     private String emailId;
     private String color;
-    private LocalDateTime reminderTime;
+    private String reminderTime;
     List<String> collaborator;
 
 }

@@ -185,15 +185,11 @@ public class NotesController {
             Response response = notesService.addCollaborator(email, id, collaborator);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        @PostMapping(value = "/addLabel")
-        ResponseEntity<Response> addLabel(@RequestHeader String token, @PathVariable Long id, @RequestParam List<Long> labelId ) {
-            Response response = notesService.addLabel(token, id, labelId);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
         
         @PostMapping(value = "/setRemainder/{id}")
         ResponseEntity<Response> setRemainder(@RequestHeader String token, @PathVariable Long id, @RequestParam String remainderTime) {
-            Response response = notesService.setRemainder(token, id, remainderTime);
+        NotesModel notesModel = notesService.setRemainder(remainderTime, token, id);
+            Response response = new Response("Remainder set Successfully", 400, notesModel);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
 }

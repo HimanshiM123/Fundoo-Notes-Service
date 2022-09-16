@@ -42,7 +42,5 @@ public interface INotesService {
 
     Response addCollaborator(String email, Long id, List<String> collaborator);
 
-    Response addLabel(String token, Long id, List<Long> labelId);
-
-    Response setRemainder(String token, Long id, String remainderTime);
+    NotesModel setRemainder(String remainderTime, String token, Long id);
 }

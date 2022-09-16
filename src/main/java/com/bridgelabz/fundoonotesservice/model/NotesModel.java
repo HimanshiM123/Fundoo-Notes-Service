@@ -26,7 +26,7 @@ public class NotesModel {
     private Long labelId;
     private String emailId;
     private String color;
-    private LocalDateTime reminderTime;
+    private String reminderTime;
     @Column
     @ElementCollection(targetClass = String.class)
     List<String> collaborator;

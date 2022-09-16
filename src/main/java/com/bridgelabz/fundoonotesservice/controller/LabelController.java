@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/label")
@@ -17,8 +18,8 @@ public class LabelController {
     ILabelService labelService;
 
     @PostMapping(value = "/addLabel")
-    ResponseEntity<Response> addLabel(@RequestBody LabelDTO labelDTO, @RequestHeader String token) {
-        Response response = labelService.addLabel(labelDTO, token);
+    ResponseEntity<Response> addLabel(@RequestBody LabelDTO labelDTO, @RequestHeader String token,  @PathVariable Long noteId, @RequestParam List<Long> labelId) {
+        Response response = labelService.addLabel(labelDTO, token, labelId, noteId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/getLabel")
