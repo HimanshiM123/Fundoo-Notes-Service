@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/label")
+@RequestMapping("/labels")
 public class LabelController {
     @Autowired
     ILabelService labelService;

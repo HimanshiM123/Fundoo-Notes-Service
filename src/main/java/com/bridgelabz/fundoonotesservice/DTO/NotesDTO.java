@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,10 +12,4 @@ import java.util.List;
 public class NotesDTO {
     private String title;
     private String description;
-    private Long labelId;
-    private String emailId;
-    private String color;
-    private String reminderTime;
-    List<String> collaborator;
-
 }

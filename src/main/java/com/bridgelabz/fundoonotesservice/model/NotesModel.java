@@ -37,14 +37,11 @@ public class NotesModel {
     public NotesModel(NotesDTO notesDTO) {
         this.title = notesDTO.getTitle();
         this.description = notesDTO.getDescription();
-        this.trash = notesDTO.isTrash();
-        this.isArchive = notesDTO.isArchive();
-        this.pin = notesDTO.isPin();
-        this.labelId = notesDTO.getLabelId();
-        this.emailId = notesDTO.getEmailId();
-        this.color = notesDTO.getColor();
-        this.reminderTime = notesDTO.getReminderTime();
-        this.collaborator = notesDTO.getCollaborator();
+//        this.labelId = notesDTO.getLabelId();
+//        this.emailId = notesDTO.getEmailId();
+//        this.color = notesDTO.getColor();
+//        this.reminderTime = notesDTO.getReminderTime();
+//        this.collaborator = notesDTO.getCollaborator();
     }
 
     public NotesModel() {

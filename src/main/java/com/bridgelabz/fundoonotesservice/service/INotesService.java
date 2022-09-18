@@ -40,7 +40,7 @@ public interface INotesService {
 
     Response unPinNotes(Long id, String token);
 
-    Response addCollaborator(String email, Long id, List<String> collaborator);
+    Response addCollaborator(String token, String email, Long id, List<String> collaborator);
 
     NotesModel setRemainder(String remainderTime, String token, Long id);
 }

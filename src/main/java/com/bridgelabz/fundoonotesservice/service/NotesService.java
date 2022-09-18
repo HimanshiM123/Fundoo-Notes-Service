@@ -2,9 +2,7 @@ package com.bridgelabz.fundoonotesservice.service;
 
 import com.bridgelabz.fundoonotesservice.DTO.NotesDTO;
 import com.bridgelabz.fundoonotesservice.exception.NotesException;
-import com.bridgelabz.fundoonotesservice.model.LabelModel;
 import com.bridgelabz.fundoonotesservice.model.NotesModel;
-import com.bridgelabz.fundoonotesservice.repository.ILabelRepository;
 import com.bridgelabz.fundoonotesservice.repository.INotesRepository;
 import com.bridgelabz.fundoonotesservice.util.Response;
 import com.bridgelabz.fundoonotesservice.util.TokenUtil;
@@ -16,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,17 +35,17 @@ public class NotesService implements INotesService{
      */
     @Override
     public Response addNotes(NotesDTO notesDTO, String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
             Long userId = tokenUtil.decodeToken(token);
-                NotesModel notesModel = new NotesModel(notesDTO);
-                notesModel.setUserId(userId);
-                notesModel.setRegisterDate(LocalDateTime.now());
-                notesRepository.save(notesModel);
-                String body = "Mentor added Successfully with id  :" + notesModel.getId();
-                String subject = "Mentor added Successfully....";
-                mailService.send(notesModel.getEmailId(), body, subject);
-                return new Response("Mentor Added Successfully", 200, notesModel);
+                    NotesModel notesModel = new NotesModel(notesDTO);
+                    notesModel.setUserId(userId);
+                    notesModel.setRegisterDate(LocalDateTime.now());
+                    notesRepository.save(notesModel);
+                    String body = "Notes added Successfully with id  :" + notesModel.getId();
+                    String subject = "Notes added Successfully....";
+                    mailService.send(notesModel.getEmailId(), body, subject);
+                    return new Response("Notes Added Successfully", 200, notesModel);
         }
         throw new NotesException(400, "Token is Wrong");
     }
@@ -67,7 +64,7 @@ public class NotesService implements INotesService{
      */
     @Override
     public List<NotesModel> getAllNotes(String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> notesModel = notesRepository.findById(userId);
@@ -87,17 +84,13 @@ public class NotesService implements INotesService{
          */
     @Override
     public Response updateNotes(long id, NotesDTO notesDTO, String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> notesModel = notesRepository.findByUserIdAndId(userId, id);
         if (notesModel.isPresent()) {
             notesModel.get().setTitle(notesDTO.getTitle());
             notesModel.get().setDescription(notesDTO.getDescription());
-            notesModel.get().setLabelId(notesDTO.getLabelId());
-            notesModel.get().setEmailId(notesDTO.getEmailId());
-            notesModel.get().setColor(notesDTO.getColor());
-            notesModel.get().setReminderTime(notesDTO.getReminderTime());
             notesRepository.save(notesModel.get());
             return new Response("Notes Updated Successfully", 200, null);
             }
@@ -111,7 +104,7 @@ public class NotesService implements INotesService{
 
     @Override
     public Response trash(Long id, String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> notesModel = notesRepository.findByUserIdAndId(userId, id);
@@ -136,7 +129,7 @@ public class NotesService implements INotesService{
 
     @Override
     public List<NotesModel> getTrashNotes(String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
             Long userId = tokenUtil.decodeToken(token);
             List<NotesModel> notesModels = notesRepository.findByUserId(userId);
@@ -153,7 +146,7 @@ public class NotesService implements INotesService{
 
     @Override
     public Response removeTrash(Long id, String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> notesModel = notesRepository.findByUserIdAndId(userId, id);
@@ -171,7 +164,7 @@ public class NotesService implements INotesService{
      */
     @Override
     public Response delete(Long id, String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> notesModel = notesRepository.findByUserIdAndId(userId, id);
@@ -188,7 +181,7 @@ public class NotesService implements INotesService{
      */
     @Override
     public Response archiveNote(Long id, String token) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> notesModel = notesRepository.findByUserIdAndId(userId, id);
@@ -219,11 +212,15 @@ public class NotesService implements INotesService{
 
     @Override
     public List<NotesModel> getArchiveNotes(String token) {
-        Long userId = tokenUtil.decodeToken(token);
-        List<NotesModel> notes = notesRepository.findByUserId(userId);
-        List<NotesModel> archiveNotes = notes.stream().filter(note -> note.isArchive()==true)
-                .collect(Collectors.toList());
-        return archiveNotes;
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
+        if (isUserPresent) {
+            Long userId = tokenUtil.decodeToken(token);
+            List<NotesModel> notes = notesRepository.findByUserId(userId);
+            List<NotesModel> archiveNotes = notes.stream().filter(note -> note.isArchive() == true)
+                    .collect(Collectors.toList());
+            return archiveNotes;
+        }
+        throw new NotesException(400, "Invalid Token");
     }
 
     /*
@@ -232,12 +229,15 @@ public class NotesService implements INotesService{
 
     @Override
     public Response pinNotes(Long id, String token) {
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
+        if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> isIdPresent = notesRepository.findByUserIdAndId(userId, id);
-        if (isIdPresent.isPresent()){
+        if (isIdPresent.isPresent()) {
             isIdPresent.get().setPin(true);
             notesRepository.save(isIdPresent.get());
             return new Response("Notes pinned", 200, isIdPresent.get());
+             }
         }
         throw new NotesException(400, "Notes Not Found");
     }
@@ -247,12 +247,15 @@ public class NotesService implements INotesService{
          */
     @Override
     public Response unPinNotes(Long id, String token) {
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
+        if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> isNotesPresent = notesRepository.findByUserIdAndId(userId, id);
-        if (isNotesPresent.isPresent()){
+        if (isNotesPresent.isPresent()) {
             isNotesPresent.get().setPin(false);
             notesRepository.save(isNotesPresent.get());
             return new Response("Notes pinned", 200, isNotesPresent.get());
+            }
         }
         throw new NotesException(400, "Notes Not Found");
     }
@@ -264,11 +267,13 @@ public class NotesService implements INotesService{
 
     @Override
     public List<NotesModel> getPinnedNotes(String token) {
-        Long userId = tokenUtil.decodeToken(token);
-        List<NotesModel> notes = notesRepository.findByUserId(userId);
-        List<NotesModel> pinNotes = notes.stream().filter(note -> note.isPin()==true)
-                .collect(Collectors.toList());
-        return pinNotes;
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
+        if (isUserPresent) {
+            Long userId = tokenUtil.decodeToken(token);
+            List<NotesModel> notes = notesRepository.findByUserId(userId);
+            List<NotesModel> pinNotes = notes.stream().filter(note -> note.isPin() == true)
+                    .collect(Collectors.toList());
+            return pinNotes;
 //        for (NotesModel note : notes) {
 //            if (note.isPin()){
 //                List<NotesModel> list = new ArrayList<>();
@@ -277,6 +282,8 @@ public class NotesService implements INotesService{
 //            }
 //        }
 //        throw new NotesException(400, "Not Pinned");
+        }
+        throw new NotesException(400, "Not Pinned");
     }
 
     /*
@@ -284,12 +291,15 @@ public class NotesService implements INotesService{
      */
     @Override
     public Response addColour(String token, Long id, String colour) {
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
+        if (isUserPresent) {
         Long userId = tokenUtil.decodeToken(token);
         Optional<NotesModel> notesModel = notesRepository.findByUserIdAndId(userId, id);
-        if (notesModel.isPresent()){
+        if (notesModel.isPresent()) {
             notesModel.get().setColor(colour);
             notesRepository.save(notesModel.get());
             return new Response("Notes colour set", 200, null);
+            }
         }
         throw new NotesException(400, "Notes Not Found");
     }
@@ -313,14 +323,15 @@ public class NotesService implements INotesService{
     Purpose : To Add collaborator to Notes
      */
     @Override
-    public Response addCollaborator(String email, Long id, List<String> collaborator) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validateEmail/" + email, Boolean.class);
-        if (isUserPresent) {
-            Optional<NotesModel> isNotesPresent = notesRepository.findById(id);
+    public Response addCollaborator(String token, String email, Long id, List<String> collaborator) {
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validateEmail/" + email, boolean.class);
+       if (isUserPresent){
+           Long userId = tokenUtil.decodeToken(token);
+            Optional<NotesModel> isNotesPresent = notesRepository.findById(userId);
             if (isNotesPresent.isPresent()){
                 List<String> collabList = new ArrayList<>();
                 collaborator.stream().forEach(collab ->{
-                    boolean isEmailPresent = restTemplate.getForObject("http://localhost:8083/user/validateEmail/" + email, Boolean.class);
+                    boolean isEmailPresent = restTemplate.getForObject("http://USER-SERVICE/user/validateEmail/" + email, boolean.class);
                     if (isEmailPresent){
                         collabList.add(collab);
                     } else {
@@ -347,7 +358,7 @@ public class NotesService implements INotesService{
      */
     @Override
     public NotesModel setRemainder(String remainderTime, String token, Long id) {
-        boolean isUserPresent = restTemplate.getForObject("http://localhost:8083/user/validate/" + token, Boolean.class);
+        boolean isUserPresent = restTemplate.getForObject("http://USER-SERVICE/user/validate/" + token, Boolean.class);
         if (isUserPresent) {
             Optional<NotesModel> isNotesPresent = notesRepository.findById(id);
             if (isNotesPresent.isPresent()) {

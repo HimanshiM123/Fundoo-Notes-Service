@@ -19,7 +19,7 @@ import java.util.List;
      version : 1.0
     */
 @RestController
-@RequestMapping("/notes")
+@RequestMapping("/note")
 public class NotesController {
     @Autowired
     INotesService notesService;
@@ -181,8 +181,8 @@ public class NotesController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
         @PostMapping(value = "/addCollaborator")
-        ResponseEntity<Response> addCollaborator(@RequestParam String email, @PathVariable Long id, @RequestParam List<String> collaborator ) {
-            Response response = notesService.addCollaborator(email, id, collaborator);
+        ResponseEntity<Response> addCollaborator(@RequestHeader String token, @RequestParam String email, @PathVariable Long id, @RequestParam List<String> collaborator ) {
+            Response response = notesService.addCollaborator(token, email, id, collaborator);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         
